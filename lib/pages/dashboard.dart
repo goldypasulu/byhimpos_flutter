@@ -1,8 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:goldy_pos/components/flat_button.dart';
-import 'package:goldy_pos/components/my_button.dart';
 import 'package:goldy_pos/models/model_kategori.dart';
 import 'package:goldy_pos/models/model_produk.dart';
 import 'package:goldy_pos/pages/product_detail.dart';
@@ -11,7 +7,6 @@ import 'package:goldy_pos/services/env.dart';
 import 'package:goldy_pos/services/general.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get_storage/get_storage.dart';
 
 class Dashboard extends StatefulWidget {
@@ -40,6 +35,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
+    super.initState();
     loadData();
     loadStorage(context);
   }
@@ -63,8 +59,7 @@ class _DashboardState extends State<Dashboard> {
     var body = jsonEncode(<String, String>{'id': selected_id.toString()});
     final response = await ApiServices().postData('/delete-issue', body);
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      // loadData();
+      jsonDecode(response.body);
     } else {
       GenServices.alertError(
           context, 'Oops!', 'Newtwork error please try again');
@@ -93,8 +88,6 @@ class _DashboardState extends State<Dashboard> {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      // body: jsonEncode(
-      //     <String, String>{'employee_id': udata['id'].toString()})
     );
     if (response.statusCode == 200) {
       loadKategori();
@@ -223,7 +216,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return MaterialApp(
