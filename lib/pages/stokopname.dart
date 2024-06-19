@@ -143,8 +143,6 @@ class _StokOpnameState extends State<StokOpname> {
 
   @override
   Widget build(BuildContext context) {
-    double cWidth = MediaQuery.of(context).size.width / 2;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

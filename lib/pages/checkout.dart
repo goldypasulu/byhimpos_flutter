@@ -1,17 +1,14 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:goldy_pos/components/modal_add_customer.dart';
 import 'package:goldy_pos/components/my_button.dart';
 import 'package:goldy_pos/components/my_button_square.dart';
 import 'package:goldy_pos/components/my_button_square_small.dart';
-import 'package:goldy_pos/pages/tabs.dart';
 import 'package:goldy_pos/services/env.dart';
 import 'package:goldy_pos/services/general.dart';
 import 'package:goldy_pos/components/modal_bottom_sheets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:expressions/expressions.dart';
 import 'package:money_formatter/money_formatter.dart';
 
 class Checkout extends StatefulWidget {
@@ -24,14 +21,12 @@ class Checkout extends StatefulWidget {
 class CartItem {
   int id;
   String name;
-  //double qty;
   double price;
   String variant;
 
   CartItem({
     required this.id,
     required this.name,
-    //required this.qty,
     required this.price,
     required this.variant,
   });
@@ -42,7 +37,6 @@ class CartItem {
     return CartItem(
       id: json['id'],
       name: json['name'],
-      //qty: double.parse(json['qty']) ?? 1,
       price: double.parse(json['harga_ml']),
       variant: json['variant'],
     );
@@ -51,12 +45,6 @@ class CartItem {
 
 class _CheckoutState extends State<Checkout> {
   List<CartItem> cartItems = [];
-  // List<CartItem> cartItems = [
-  //   CartItem(name: 'Product 1', quantity: 1, price: 29.99),
-  //   CartItem(name: 'Product 2', quantity: 1, price: 49.99),
-  //   CartItem(name: 'Product 3', quantity: 1, price: 19.99),
-  // ];
-  // List cartItems = [];
   bool loading = false;
   bool is_tunai = true;
   bool is_non = false;
@@ -157,24 +145,6 @@ class _CheckoutState extends State<Checkout> {
   void gotoPos() {
     Navigator.pushReplacementNamed(context, '/tabs');
   }
-
-  // void incrementQuantity(int index, id) {
-  //   setState(() {
-  //     cartItems[index].qty++;
-  //   });
-  //   var newQty = cartItems[index].qty.toString();
-  //   doUpdateCart(id, newQty);
-  // }
-
-  // void decrementQuantity(int index, id) {
-  //   if (cartItems[index].qty > 1) {
-  //     setState(() {
-  //       cartItems[index].qty--;
-  //     });
-  //     var newQty = cartItems[index].qty.toString();
-  //     doUpdateCart(id, newQty);
-  //   }
-  // }
 
   void removeItem(int index, id) {
     doDeleteCart(id);
@@ -685,172 +655,6 @@ class _CheckoutState extends State<Checkout> {
           ],
         ),
       ),
-    );
-  }
-}
-
-// MODAL ADD CUSTOMER =======
-class ModalAddCustomer extends StatefulWidget {
-  final TextEditingController hp_controller;
-  final TextEditingController name_controller;
-  const ModalAddCustomer(
-      {super.key, required this.hp_controller, required this.name_controller});
-
-  @override
-  _ModalAddCustomerState createState() => _ModalAddCustomerState();
-}
-
-class _ModalAddCustomerState extends State<ModalAddCustomer> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    widget.hp_controller.clear();
-    widget.name_controller.clear();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    void _back() {
-      Navigator.of(context).pop();
-    }
-
-    return SizedBox(
-      child: Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const Text(
-                  'Daftarkan Customer',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16.0),
-                const Divider(),
-                TextField(
-                  controller: widget.name_controller,
-                  readOnly: false,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Nama Customer',
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextField(
-                  controller: widget.hp_controller,
-                  readOnly: false,
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'No Hp',
-                  ),
-                ),
-                Center(
-                  child: Row(
-                    children: [
-                      MyButtonSquare(
-                          onPress: () {
-                            _back();
-                          },
-                          label: 'SUBMIT',
-                          color: Colors.black,
-                          color_border: Colors.white,
-                          color_text: Colors.white),
-                      MyButtonSquare(
-                          onPress: () {
-                            _back();
-                          },
-                          label: 'Batal',
-                          color: Colors.grey,
-                          color_border: Colors.white,
-                          color_text: Colors.white),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// MODAL INPUT CUSTOMER =======
-class ModalCustomer extends StatefulWidget {
-  final TextEditingController res_controller;
-  const ModalCustomer({super.key, required this.res_controller});
-
-  @override
-  _ModalCustomerState createState() => _ModalCustomerState();
-}
-
-class _ModalCustomerState extends State<ModalCustomer> {
-  @override
-  Widget build(BuildContext context) {
-    void _back() {
-      Navigator.of(context).pop();
-    }
-
-    return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Text(
-                'Input nomor HP Customer',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16.0),
-              const Divider(),
-              TextField(
-                controller: widget.res_controller,
-                readOnly: false,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '08XXX',
-                ),
-              ),
-              Center(
-                child: MyButtonSquare(
-                    onPress: () {
-                      _back();
-                    },
-                    label: 'SUBMIT',
-                    color: Colors.black,
-                    color_border: Colors.white,
-                    color_text: Colors.white),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class PriceButton extends StatelessWidget {
-  final String price;
-  final Function(String) onPressed;
-
-  const PriceButton({super.key, required this.price, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        onPressed(price.replaceAll('.', '')); // Menghilangkan titik dari harga
-      },
-      child: Text(price),
     );
   }
 }
