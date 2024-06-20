@@ -277,7 +277,7 @@ class _CheckoutState extends State<Checkout> {
         'user_id': user_id.toString(),
       }),
     );
-        // Logging data sebelum dikirim
+    // Logging data sebelum dikirim
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       String message = data["message"];
@@ -310,17 +310,16 @@ class _CheckoutState extends State<Checkout> {
     double screenWidth = MediaQuery.of(context).size.width;
     // MoneyFormatter fmf = MoneyFormatter(amount: 12345678.9012345);
     MoneyFormatter fmf = MoneyFormatter(
-      amount: 0,
-      settings: MoneyFormatterSettings(
-        symbol: 'IDR',
-        thousandSeparator: '.',
-        decimalSeparator: ',',
-        symbolAndNumberSeparator: ' ',
-        fractionDigits: 0,
-      )
-    );
-    
-      double parseDouble(String value) {
+        amount: 0,
+        settings: MoneyFormatterSettings(
+          symbol: 'IDR',
+          thousandSeparator: '.',
+          decimalSeparator: ',',
+          symbolAndNumberSeparator: ' ',
+          fractionDigits: 0,
+        ));
+
+    double parseDouble(String value) {
       try {
         return double.parse(value);
       } catch (e) {
@@ -328,7 +327,9 @@ class _CheckoutState extends State<Checkout> {
         return 0.0; // or any default value you deem appropriate
       }
     }
-    double calculatedAmount = kembalian((parseDouble(_controller.text)-subtotal).toString());
+
+    double calculatedAmount =
+        kembalian((parseDouble(_controller.text) - subtotal).toString());
     print('calculatedAmount: $calculatedAmount');
     MoneyFormatterOutput fok = fmf.copyWith(amount: calculatedAmount).output;
     MoneyFormatterOutput fo = fmf.output;
@@ -364,7 +365,6 @@ class _CheckoutState extends State<Checkout> {
                     ],
                   ),
                 ),
-
                 Column(
                   children: [
                     MyButtonSquareSmall(
@@ -536,21 +536,19 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: !loading
-                          ? Text(
-                              fok.symbolOnLeft,
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold
-                              ),
-                            )
-                          : const CircularProgressIndicator()  // Assuming 'loading' is a boolean controlling loading state.
-                      ),
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: !loading
+                              ? Text(
+                                  fok.symbolOnLeft,
+                                  style: const TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              : const CircularProgressIndicator() // Assuming 'loading' is a boolean controlling loading state.
+                          ),
                     ],
                   )
                 : const Row(),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -584,7 +582,6 @@ class _CheckoutState extends State<Checkout> {
                     )),
               ],
             ),
-            // const Divider(),
             SizedBox(
               width: double.infinity,
               child: !show_kembalian
@@ -592,8 +589,12 @@ class _CheckoutState extends State<Checkout> {
                       onPress: () {
                         showModalBottomSheet(
                           context: context,
-                          builder: (context) =>
-                              MyModalBottomSheet(resController: _controller),
+                          isDismissible: false,
+                          isScrollControlled: true,
+                          builder: (context) => MyModalBottomSheet(
+                            resController: _controller,
+                            subtotal: subtotal,
+                          ),
                         ).whenComplete(() {
                           setState(() {
                             loading = true;
@@ -604,8 +605,6 @@ class _CheckoutState extends State<Checkout> {
                           });
                         });
                       },
-                      // onPress: () => GenServices.alert(
-                      //     goBayar, context, 'Bayar Transaksi', 'Anda yakin  ?'),
                       label: 'BAYAR',
                       color: Colors.white,
                       color_border: Colors.black,
@@ -617,8 +616,12 @@ class _CheckoutState extends State<Checkout> {
                             onPress: () {
                               showModalBottomSheet(
                                 context: context,
-                                builder: (context) => MyModalBottomSheet(
-                                    resController: _controller),
+                                isDismissible: false,
+                                isScrollControlled: true,
+                                builder: (context) => SingleChildScrollView(
+                                    child: MyModalBottomSheet(
+                                        resController: _controller,
+                                        subtotal: subtotal)),
                               ).whenComplete(() {
                                 setState(() {
                                   loading = true;

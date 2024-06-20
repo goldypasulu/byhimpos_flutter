@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 // Widget to display a modal bottom sheet for entering amounts.
 class MyModalBottomSheet extends StatefulWidget {
   final TextEditingController resController;
+  final double subtotal;
 
-  const MyModalBottomSheet({super.key, required this.resController});
+  const MyModalBottomSheet(
+      {super.key, required this.resController, required this.subtotal});
 
   @override
   _MyModalBottomSheetState createState() => _MyModalBottomSheetState();
@@ -38,7 +42,13 @@ class _MyModalBottomSheetState extends State<MyModalBottomSheet> {
     try {
       double amount = double.parse(input);
       if (amount < 0) {
-        _showError('Amount cannot be negative. Please enter a valid amount.');
+        _showError(
+            'Jumlah tidak boleh kurang dari 0. Silakan masukkan jumlah yang valid.');
+        _clearValue();
+        return;
+      }
+      if (amount < widget.subtotal) {
+        _showError('Silakan masukkan minimal ${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(widget.subtotal)} atau lebih.');
         _clearValue();
         return;
       }
@@ -72,6 +82,7 @@ class _MyModalBottomSheetState extends State<MyModalBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    double subtotal = widget.subtotal;
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -80,9 +91,10 @@ class _MyModalBottomSheetState extends State<MyModalBottomSheet> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text(
-                'Pilih Nominal',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                'Total Pembayaran: ${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(subtotal)}',
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16.0),
               Wrap(
@@ -95,12 +107,14 @@ class _MyModalBottomSheetState extends State<MyModalBottomSheet> {
                 ],
               ),
               const Divider(),
-              TextField(
-                controller: widget.resController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Input Nominal Bayar',
+              FocusScope(
+                child: TextField(
+                  controller: widget.resController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Input Nominal Bayar',
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
