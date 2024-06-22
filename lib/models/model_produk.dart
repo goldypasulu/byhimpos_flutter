@@ -4,7 +4,7 @@ class ListProduct {
   String description;
   dynamic image;
   String price;
-  String stock;
+  //String stock;
   String status;
   String is_favorite;
   String branch_id;
@@ -16,7 +16,7 @@ class ListProduct {
     required this.description,
     required this.image,
     required this.price,
-    required this.stock,
+    //required this.stock,
     required this.status,
     required this.is_favorite,
     required this.branch_id,
@@ -30,7 +30,7 @@ class ListProduct {
       description: json['description'],
       image: json['image'],
       price: json['price'],
-      stock: json['stock'],
+      //stock: json['stock'],
       status: json['status'],
       is_favorite: json['is_favorite'],
       branch_id: json['branch_id'],

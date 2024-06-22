@@ -50,8 +50,8 @@ class _CheckoutState extends State<Checkout> {
   bool is_non = false;
   bool show_kembalian = false;
   String branch_id = '';
-  String customer_selected = '';
-  String hp_selected = '';
+  String customer_selected = 'guest';
+  String hp_selected = '0';
   int user_id = 3;
 
   final TextEditingController _controller = TextEditingController();

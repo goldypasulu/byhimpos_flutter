@@ -50,7 +50,7 @@ class _MyTabsState extends State<MyTabs> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.post_add_rounded),
-            label: 'Stokopname',
+            label: 'Restock',
             backgroundColor: Colors.indigo,
           ),
           BottomNavigationBarItem(

@@ -109,7 +109,8 @@ class _StokOpnameState extends State<StokOpname> {
     });
     try {
       final response = await http.post(
-        Uri.parse('$apiUrl/add-stock-opname'),
+        //Uri.parse('$apiUrl/add-stock-opname'),
+        Uri.parse('$apiUrl/restock'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -118,16 +119,15 @@ class _StokOpnameState extends State<StokOpname> {
           'total_weight': _controller.text
         }),
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
         setState(() {
           loading = false;
         });
         Map<String, dynamic> data = jsonDecode(response.body);
         String message = data["message"];
-        var datas = data["data"];
         var status = data["status"];
-        if (status == 'success') {
+        if (status == 200) {
           loadData();
         } else {
           GenServices.alertError(context, 'Oops!', message);
@@ -224,7 +224,7 @@ class _StokOpnameState extends State<StokOpname> {
                                                       .spaceBetween,
                                               children: [
                                                 const Text(
-                                                  'Current Stock',
+                                                  'Current Stock (ml)',
                                                   style:
                                                       TextStyle(fontSize: 12),
                                                 ),
@@ -287,7 +287,7 @@ class _StokOpnameState extends State<StokOpname> {
         const SizedBox(
           height: 40,
           child: Text(
-            'STOK OPNAME',
+            'RESTOCK PRODUCT',
             style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
