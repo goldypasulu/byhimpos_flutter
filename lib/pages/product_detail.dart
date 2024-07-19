@@ -166,6 +166,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       }),
     );
 
+    print(response.body); // Debug print
+
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       String message = data["message"];

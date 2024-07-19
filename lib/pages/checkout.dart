@@ -34,10 +34,15 @@ class CartItem {
   double get total => price;
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
+    //Handle null value in price_after_discount
+    double price = json['price_after_discount'] != null
+        ? double.parse(json['price_after_discount'])
+        : double.parse(json['harga_ml']);
+
     return CartItem(
       id: json['id'],
-      name: json['name'],
-      price: double.parse(json['harga_ml']),
+      name: json['name'] ?? 'Unknown',
+      price: price,
       variant: json['variant'],
     );
   }
@@ -114,23 +119,34 @@ class _CheckoutState extends State<Checkout> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+
+    print('Response Status: ${response.statusCode}');
+    print('Response Body: ${response.body}');
+
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data);
+      print("Decoded data: $data");
       String message = data["message"];
       var status = data["status"];
       var datas = data["data"];
-      var jsonData = json.decode(response.body);
+      
       if (status == 'success') {
         setState(() {
           loading = false;
-          // cartItems = jsonData['data'];
         });
-        Iterable it = datas;
-        print('load all data');
-        setState(() {
-          cartItems = it.map((e) => CartItem.fromJson(e)).toList();
-        });
+        
+        
+         // Periksa apakah datas bukan null
+        // Periksa apakah datas bukan null dan merupakan List
+        if (datas != null && datas is List) {
+          print('load all data');
+          setState(() {
+            cartItems = datas.map((e) => CartItem.fromJson(e)).toList();
+          });
+        } else {
+          print('Error: datas is null or not a list');
+          GenServices.alertError(context, 'Error', 'Data tidak valid');
+        }
       } else {
         GenServices.alertError(context, 'Oops!', message);
       }
@@ -275,15 +291,20 @@ class _CheckoutState extends State<Checkout> {
         'phone_number': hp_selected,
         'name_customer': customer_selected,
         'user_id': user_id.toString(),
+        'branch_id': branch_id,
       }),
     );
-    // Logging data sebelum dikirim
+
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    print(response.body);
+
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       String message = data["message"];
       var status = data["status"];
       var datas = data["data"];
       var jsonData = json.decode(response.body);
+
       if (status == 'success') {
         setState(() {
           loading = false;

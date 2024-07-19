@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:goldy_pos/models/model_kategori.dart';
 import 'package:goldy_pos/models/model_produk.dart';
+import 'package:goldy_pos/pages/bundle_detail.dart';
 import 'package:goldy_pos/pages/product_detail.dart';
 import 'package:goldy_pos/services/api.dart';
 import 'package:goldy_pos/services/env.dart';
@@ -18,6 +19,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<ListProduct> list_product = [];
+  List<Bundle> list_bundles = [];
   List<ListKategori> list_kategori = [];
   bool loading = false;
   final TextEditingController _controller_seach = TextEditingController();
@@ -96,17 +98,21 @@ class _DashboardState extends State<Dashboard> {
       var status = data["status"];
       var datas = data["data"];
       if (status == 'success') {
-        Iterable it = datas;
-        print('loada all data');
+        List<dynamic> productData = datas['products'];
+        List<dynamic> bundleData = datas['bundles'];
+        print('load all data');
         setState(() {
-          list_product = it.map((e) => ListProduct.fromJson(e)).toList();
+          list_product =
+              productData.map((e) => ListProduct.fromJson(e)).toList();
+          list_bundles = bundleData.map((e) => Bundle.fromJson(e)).toList();
         });
+        print("Loaded bundles: ${list_bundles.length}");
       } else {
         GenServices.alertError(context, 'Oops!', message);
       }
     } else {
       GenServices.alertError(
-          context, 'Oops!', 'Newtwork error please try again');
+          context, 'Oops!', 'Network error please try again');
     }
   }
 
@@ -293,7 +299,9 @@ class _DashboardState extends State<Dashboard> {
                                                 image: item.image,
                                                 foto_path: foto_path_url,
                                                 description: item.description,
-                                                price: item.price)
+                                                price: item.price),
+                                          for (var bundle in list_bundles)
+                                            BundleCard(bundle: bundle)
                                         ])
                                       : Container(
                                           margin: EdgeInsets.symmetric(
@@ -448,6 +456,60 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
+
+class BundleCard extends StatelessWidget {
+  final Bundle bundle;
+
+  const BundleCard({Key? key, required this.bundle}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Define your navigation or action on tap here
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BundleDetailPage(bundle: bundle)));
+      },
+      child: SizedBox(
+        width: 100,
+        child: Card(
+          margin: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        bundle.name,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      "Rp. ${bundle.price}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 15.0),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 class ButtonKategori extends StatelessWidget {
   final Function()? onPress;

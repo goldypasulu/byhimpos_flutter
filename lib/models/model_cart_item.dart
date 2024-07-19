@@ -20,7 +20,7 @@ class CartItem {
       id: json['id'],
       name: json['name'],
       //qty: double.parse(json['qty']) ?? 1,
-      price: double.parse(json['harga_ml']),
+      price: double.parse(json['price']),
       variant: json['variant'],
     );
   }
