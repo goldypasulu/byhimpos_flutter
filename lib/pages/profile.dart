@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:goldy_pos/pages/settings_page.dart';
 import 'package:goldy_pos/services/general.dart';
 
 class Profile extends StatefulWidget {
@@ -22,6 +23,13 @@ class _ProfileState extends State<Profile> {
     final box = GetStorage();
     box.erase();
     Navigator.pushReplacementNamed(context, '/loginpage');
+  }
+
+  void onSettings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SettingsPage()),
+    ); // Navigate to settings page
   }
 
   @override
@@ -56,305 +64,115 @@ class _ProfileState extends State<Profile> {
         useMaterial3: true,
       ),
       home: Scaffold(
-          backgroundColor: const Color.fromRGBO(234, 245, 255, 0.9),
-          body: Container(
-            child: Stack(
-              children: <Widget>[
-                Scaffold(
-                  backgroundColor: Colors.transparent,
-                  body: Container(
-                    child: Stack(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: height / 15, left: height / 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                // height: 70,
-                                width: 200,
-                                // child: Image.asset(
-                                //   'lib/images/logo_1.png',
-                                //   fit: BoxFit.cover,
-                                // ),
-                              ),
-                              const Text(
-                                'Profile',
-                                style: TextStyle(
-                                    fontSize: 25.0,
-                                    color: Color.fromRGBO(31, 58, 116, 0.9),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Text(
-                                'See Your Profile here',
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Color.fromRGBO(31, 58, 116, 0.9),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+        backgroundColor: const Color.fromRGBO(234, 245, 255, 0.9),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Profile',
+                          style: TextStyle(
+                              fontSize: 25.0,
+                              color: Color.fromRGBO(31, 58, 116, 0.9),
+                              fontWeight: FontWeight.bold),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: width / 4,
-                              left: width / 20,
-                              right: width / 20),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black45,
-                                          blurRadius: 2.0,
-                                          offset: Offset(0.0, 2.0))
-                                    ]),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: width / 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 15),
-                                        const Text(
-                                          'Brach Id',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Container(
-                                          height: 30,
-                                          width: width / 1.3,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[100],
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10)),
-                                              border: Border.all(
-                                                  color: Colors.grey)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            child: Text(
-                                              branch_id,
-                                              style: TextStyle(
-                                                color: Colors.grey[500],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        const Text(
-                                          'Role',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Container(
-                                          height: 30,
-                                          width: width / 1.3,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[100],
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10)),
-                                              border: Border.all(
-                                                  color: Colors.grey)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            child: Text(
-                                              role,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        const Text(
-                                          'Name',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Container(
-                                          height: 30,
-                                          width: width / 1.3,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[100],
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10)),
-                                              border: Border.all(
-                                                  color: Colors.grey)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            child: Text(
-                                              nama,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        const Text(
-                                          'Email',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Container(
-                                          height: 30,
-                                          width: width / 1.3,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[100],
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10)),
-                                              border: Border.all(
-                                                  color: Colors.grey)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            child: Text(
-                                              email,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        const Text(
-                                          'Username',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Container(
-                                          height: 30,
-                                          width: width / 1.3,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[100],
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10)),
-                                              border: Border.all(
-                                                  color: Colors.grey)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            child: Text(
-                                              username,
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: height / 40),
-                                      child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateColor.resolveWith(
-                                                    (states) =>
-                                                        const Color.fromRGBO(
-                                                            31, 58, 116, 0.9)),
-                                            elevation:
-                                                MaterialStateProperty.all(10),
-                                          ),
-                                          onPressed: () => GenServices.alert(
-                                              onLogout,
-                                              context,
-                                              'Logout',
-                                              'Are you sure ?'),
-                                          child: Center(
-                                            child: Container(
-                                              height: 40,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5),
-                                              child: const Center(
-                                                  child: Text(
-                                                'Logout',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              )),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )
+                        const Text(
+                          'See Your Profile here',
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              color: Color.fromRGBO(31, 58, 116, 0.9),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 20),
+                        _buildProfileField('Brach Id', branch_id, width),
+                        const SizedBox(height: 15),
+                        _buildProfileField('Role', role, width),
+                        const SizedBox(height: 15),
+                        _buildProfileField('Name', nama, width),
+                        const SizedBox(height: 15),
+                        _buildProfileField('Email', email, width),
+                        const SizedBox(height: 15),
+                        _buildProfileField('Username', username, width),
+                        const SizedBox(height: 30),
+                        _buildButton('Settings', () {
+                          onSettings();
+                        }),
+                        const SizedBox(height: 10),
+                        _buildButton('Logout', () {
+                          GenServices.alert(
+                              onLogout, context, 'Logout', 'Are you sure ?');
+                        }),
+                        const SizedBox(height: 20),
                       ],
                     ),
-                  ),
+                  ), 
                 ),
-              ],
-            ),
-          )),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget headerChild(String header, String value) => Expanded(
-          child: Column(
-        children: <Widget>[
-          Text(header),
-          const SizedBox(
-            height: 8.0,
+  Widget _buildProfileField(String label, String value, double width) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.black)),
+        const SizedBox(height: 5),
+        Container(
+          height: 30,
+          width: width / 1.3,
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(color: Colors.grey),
           ),
-          Text(
-            value,
-            style: const TextStyle(
-                fontSize: 14.0,
-                color: Color.fromARGB(255, 34, 136, 225),
-                fontWeight: FontWeight.bold),
-          )
-        ],
-      ));
-
-  Widget infoChild(double width, IconData icon, data) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: InkWell(
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                width: width / 10,
-              ),
-              Icon(
-                icon,
-                color: const Color.fromARGB(255, 34, 136, 225),
-                size: 36.0,
-              ),
-              SizedBox(
-                width: width / 20,
-              ),
-              Text(data)
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.grey),
+            ),
           ),
-          onTap: () {
-            print('Info Object selected');
-          },
         ),
-      );
+      ],
+    );
+  }
+
+  Widget _buildButton(String label, VoidCallback onPressed) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromRGBO(31, 58, 116, 0.9),
+          elevation: 10,
+        ),
+        onPressed: onPressed,
+        child: Center(
+          child: Container(
+            height: 40,
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            child: Center(
+              child: Text(
+                label,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

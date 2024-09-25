@@ -9,6 +9,8 @@ import 'package:goldy_pos/pages/profile.dart';
 import 'package:goldy_pos/pages/tabs.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/settings_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
           '/tabs': (context) => const MyTabs(),
           '/history': (context) => const History(),
           '/profile': (context) => const Profile(),
+          '/settingspage': (context) => const SettingsPage(),
         },
       ),
     );
